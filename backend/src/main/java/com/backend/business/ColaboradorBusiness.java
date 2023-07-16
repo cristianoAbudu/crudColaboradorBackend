@@ -1,32 +1,24 @@
 package com.backend.business;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.Repository;
 import org.springframework.stereotype.Service;
 
 import com.backend.dto.ChefeSubordinado;
 import com.backend.entity.ColaboradorEntity;
 import com.backend.repositotory.ColaboradorRepository;
-import com.backend.util.SenhaUtil;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.spec.KeySpec;
-import java.util.Base64;
 
 @Service
 public class ColaboradorBusiness {
 
 	@Autowired
 	ColaboradorRepository colaboradorRepository;
-
+	
+	@Autowired
+	RabbitTemplate rabbitTemplate;
+  
 	public ColaboradorEntity findById(Integer id) {
 		return colaboradorRepository.findById(id).get();
 	}
@@ -38,11 +30,11 @@ public class ColaboradorBusiness {
 
 	public ColaboradorEntity save(ColaboradorEntity colaboradorEntity) throws Exception {
 
-		colaboradorEntity.setScore(SenhaUtil.calculaComplexidade(colaboradorEntity.getSenha()));
+		colaboradorEntity = colaboradorRepository.save(colaboradorEntity);
 		
-		colaboradorEntity.setSenha(SenhaUtil.encryptPassword(colaboradorEntity.getSenha()));
-
-		return colaboradorRepository.save(colaboradorEntity);
+		rabbitTemplate.convertAndSend("spring-boot-exchange", "foo.bar.baz", colaboradorEntity.getId());
+		
+		return colaboradorEntity;
 	}
 	
 
