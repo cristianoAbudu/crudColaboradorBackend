@@ -32,7 +32,7 @@ public class ColaboradorBusiness {
 
 		colaboradorEntity = colaboradorRepository.save(colaboradorEntity);
 		
-		rabbitTemplate.convertAndSend("spring-boot-exchange", "foo.bar.baz", colaboradorEntity.getId());
+		//rabbitTemplate.convertAndSend("spring-boot-exchange", "foo.bar.baz", colaboradorEntity.getId());
 		
 		return colaboradorEntity;
 	}
