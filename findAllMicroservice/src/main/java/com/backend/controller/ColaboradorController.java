@@ -19,26 +19,9 @@ public class ColaboradorController {
 	@Autowired
 	ColaboradorBusiness colaboradorBusiness;
 	
-	@GetMapping("/{id}")
-	public ColaboradorEntity get(@PathVariable Integer id) {
-		return colaboradorBusiness.findById(id);
-	}
-	
 	@GetMapping
 	public List<ColaboradorEntity> get() {
 		return colaboradorBusiness.findAll();
 	}
-	
-	@PostMapping
-	public ColaboradorEntity post(@RequestBody ColaboradorEntity colaboradorEntity) throws Exception {
-		return  colaboradorBusiness.save(colaboradorEntity);
-	}
-	
-	
-	@PostMapping(path = "/associaChefe")
-	public ColaboradorEntity associaChefe(@RequestBody ChefeSubordinado chefeSubordinadoDTO) throws Exception {
-		return colaboradorBusiness.associaSubordinado(chefeSubordinadoDTO);
-	}
-	
 
 }
