@@ -18,5 +18,4 @@ public class ChefeSubordinado {
 		this.idSubordinado = idSubordinado;
 	}
 
-
 }
