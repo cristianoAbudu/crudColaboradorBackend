@@ -16,7 +16,6 @@ public class ColaboradorBusiness {
 	
 	public List<ColaboradorEntity> findAll() {
 		return colaboradorRepository.findAll();
-
 	}
 
 }
